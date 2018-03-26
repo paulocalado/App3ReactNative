@@ -12,6 +12,7 @@ import {
   View,
   Button,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -29,36 +30,98 @@ export default class App extends Component<Props> {
   constructor(props){
     super(props);
 
-    this.state = { userChoice : ''};
+    this.state = { userChoice : '', computerChoice: '',
+                   result: ''};
     this.setState = this.setState.bind(this);
   }
 
  jokenpoFunction(userChoice){
-    this.setState({userChoice : userChoice});
+    var computerChoice = '';
+    var randomNumber = Math.floor(Math.random()*3);
+    var result = '';
+        switch(randomNumber){
+          case 0: 
+            computerChoice = 'pedra';
+            break;
+          case 1: 
+            computerChoice = 'papel';
+            break;
+          case 2:  
+            computerChoice = 'tesoura';
+            break;
+        }
+
+   if(userChoice === computerChoice){
+        result = 'Empate';
+    }else{
+       if(userChoice === 'pedra'){
+        if(computerChoice === 'papel'){
+          result = 'Você Perdeu!'
+        }else{
+          result = 'Você Venceu!'
+        }
+      }
+      if(userChoice === 'papel'){
+        if(computerChoice === 'tesoura'){
+          result = 'Você Perdeu!'
+        }else{
+          result = 'Você Venceu!'
+        }
+      }
+      if(userChoice === 'tesoura'){
+        if(computerChoice === 'pedra'){
+          result = 'Você Perdeu!'
+        }else{
+          result = 'Você Venceu!'
+        }
+      }
+    }
+      this.setState({userChoice : userChoice,
+                     computerChoice : computerChoice,
+                     result : result});   
  }
 
   render() {
     const {container, textTouchable,
-           touchableStyle} = styles;
+           touchableStyle, panelStyle,
+            bottomStyle, textResult} = styles;
     return (
       <View style={container}>
-        <Text>Escolha do usuário: {this.state.userChoice}</Text>
-        <Text>Escolha do Computador</Text>
-        <Text>Resultado</Text>
 
-        <TouchableOpacity style={touchableStyle} onPress={() => {this.jokenpoFunction('pedra')}}>
-          <Text style={textTouchable}>Pedra</Text>
-        </TouchableOpacity>
+        <Top></Top>
+        <View style={panelStyle}>
+          <TouchableOpacity style={touchableStyle} onPress={() => {this.jokenpoFunction('pedra')}}>
+            <Text style={textTouchable}>Pedra</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={touchableStyle} onPress={() => {this.jokenpoFunction('papel')}}>
-          <Text style={textTouchable}>Papel</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={touchableStyle} onPress={() => {this.jokenpoFunction('papel')}}>
+            <Text style={textTouchable}>Papel</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={touchableStyle} onPress={() => {this.jokenpoFunction('tesoura')}}>
-          <Text style={textTouchable}>Tesoura</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={touchableStyle} onPress={() => {this.jokenpoFunction('tesoura')}}>
+            <Text style={textTouchable}>Tesoura</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={bottomStyle}>
+          <Text>Escolha do usuário: {this.state.userChoice}</Text>
+          <Text>Escolha do Computador: {this.state.computerChoice}</Text>
+          <Text style={textResult}>{this.state.result}</Text>
+        </View>
+
+       
       </View>
     );
+  }
+}
+
+class Top extends Component{
+  render(){
+    return(
+        <View>
+          <Image source={require('./images/jokenpo.png')} />
+        </View>
+      );
   }
 }
 
@@ -81,14 +144,29 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  bottomStyle: {
+    alignItems: 'center',
+    marginTop: 10
+  },
   textTouchable: {
     backgroundColor: '#577848',
     color: '#fff',
     fontSize: 20,
     padding: 10,
-    margin: 5
+    margin: 5,
   },
   touchableStyle: {
+    marginTop: 10,
+    width: 120,
     alignItems: 'center'
+  },
+  panelStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  textResult: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#577848'
   }
 });
