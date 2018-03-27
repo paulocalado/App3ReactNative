@@ -15,6 +15,9 @@ import {
   Image,
 } from 'react-native';
 
+import Top from './src/components/top';
+import Icon from './src/components/icon';
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -104,8 +107,9 @@ export default class App extends Component<Props> {
         </View>
 
         <View style={bottomStyle}>
-          <Text>Escolha do usuário: {this.state.userChoice}</Text>
-          <Text>Escolha do Computador: {this.state.computerChoice}</Text>
+          <Icon choice={this.state.computerChoice} player={'Computador'}></Icon>
+          <Icon choice={this.state.userChoice} player={'Usuário'}></Icon>
+         
           <Text style={textResult}>{this.state.result}</Text>
         </View>
 
@@ -115,15 +119,6 @@ export default class App extends Component<Props> {
   }
 }
 
-class Top extends Component{
-  render(){
-    return(
-        <View>
-          <Image source={require('./images/jokenpo.png')} />
-        </View>
-      );
-  }
-}
 
 const chanteTExt = () =>{
   this.setState({texto: 'Clicou botao dois'})
